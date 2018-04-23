@@ -8,6 +8,7 @@ var ServerlessPlugin = (function () {
         this.compile = function () {
             var Resources = _this.serverless.service.provider
                 .compiledCloudFormationTemplate.Resources;
+            console.log(_this.opts);
             var resources = factory_1.prepare(_this.tag, _this.opts);
             _.each(resources, function (resource) {
                 _this.serverless.cli.log("Building resources for " + resource.name);
@@ -52,19 +53,23 @@ var ServerlessPlugin = (function () {
     ServerlessPlugin.prototype.dockerPush = function (tag) {
         var command = "docker push " + tag;
         this.serverless.cli.log("Pushing image " + tag);
+        var stdio = null;
         if (process.env.SLS_DEBUG) {
             this.serverless.cli.log(command);
+            stdio = [0, 1, 2];
         }
-        var result = execSync(command);
+        var result = execSync(command, { stdio: stdio });
         this.serverless.cli.log(result);
     };
     ServerlessPlugin.prototype.dockerBuild = function (path, tag) {
         var command = "docker build -t " + tag + " " + path;
         this.serverless.cli.log("Building image " + tag + " at " + path);
+        var stdio = null;
         if (process.env.SLS_DEBUG) {
             this.serverless.cli.log(command);
+            stdio = [0, 1, 2];
         }
-        var result = execSync(command);
+        var result = execSync(command, { stdio: stdio });
         this.serverless.cli.log(result);
     };
     ServerlessPlugin.prototype.getTag = function () {

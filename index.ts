@@ -43,7 +43,7 @@ class ServerlessPlugin {
     const Resources = this.serverless.service.provider
       .compiledCloudFormationTemplate.Resources;
 
-    console.log(this.opts);
+    this.serverless.cli.log(this.opts);
 
     const resources = prepare(this.tag, this.opts);
     _.each(resources, resource => {
