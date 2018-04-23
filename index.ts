@@ -33,14 +33,13 @@ class ServerlessPlugin {
     };
 
     this.hooks = {
-      "package:compileFunctions": Promise.resolve().then(
-        this.compile.bind(this)
-      ),
-      "cls-build:run": Promise.resolve().then(this.build.bind(this))
+      "package:compileFunctions": this.compile,
+      "cls-build:run": this.build
     };
   }
 
   public compile = () => {
+    this.opts = this.getOptions();
     const Resources = this.serverless.service.provider
       .compiledCloudFormationTemplate.Resources;
 
@@ -52,6 +51,7 @@ class ServerlessPlugin {
   };
 
   public build = () => {
+    this.opts = this.getOptions();
     this.serverless.cli.log("Configuring containerless");
     _.each(this.opts.applications, (app, name: string) => {
       this.serverless.cli.log(`Building service ${name}`);
