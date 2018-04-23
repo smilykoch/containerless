@@ -1,33 +1,33 @@
 export interface Config {
-    servicePath: string;
+  servicePath: string;
 }
 export interface CLI {
-    log(msg: string): void;
+  log(msg: string): void;
 }
 export interface Service {
-    custom: any;
-    provider: any;
-    service: string;
+  custom: any;
+  provider: any;
+  service: string;
 }
 export interface Input {
-    options: any;
+  options: any;
 }
 export interface Serverless {
-    cli: CLI;
-    config: Config;
-    service: Service;
-    processedInput: Input;
+  cli: CLI;
+  config: Config;
+  service: Service;
+  processedInput: Input;
 }
 export interface Command {
-    usage: String;
-    lifecycleEvents: Array<string>;
-    options?: {
-        [key: string]: any;
-    };
+  usage: String;
+  lifecycleEvents: Array<string>;
+  options?: {
+    [key: string]: any;
+  };
 }
 export interface CommandMap {
-    [key: string]: Command;
+  [key: string]: Command;
 }
 export interface HookMap {
-    [key: string]: Function;
+  [key: string]: any;
 }

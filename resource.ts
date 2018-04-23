@@ -1,4 +1,4 @@
 export interface Resource {
-  name: string
-  generate(): any  
+  name: string;
+  generate(): any;
 }

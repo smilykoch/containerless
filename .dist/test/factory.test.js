@@ -9,26 +9,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mocha_typescript_1 = require("mocha-typescript");
 var chai_1 = require("chai");
 var factory_1 = require("../factory");
-describe('', function () {
+describe("", function () {
     var FactoryTest = (function () {
         function FactoryTest() {
-            this.tag = 'tag-123abc';
+            this.tag = "tag-123abc";
             this.opts = {
-                repository: 'blah/vtha',
-                service: 'blah-vtha-dev',
+                repository: "blah/vtha",
+                service: "blah-vtha-dev",
                 cluster: {
-                    id: 'arn:aws:ecs:ap-southeast-2:005213230316:cluster/vtha-ECSCluster-1A5ZYNUN7X46N',
-                    security_group: 'sg-abcdef',
-                    vpcId: 'vpc-1',
-                    subnets: [
-                        'subnet-12359e64',
-                        'subnet-b442c0d0',
-                        'subnet-a2b967fb'
-                    ],
+                    id: "arn:aws:ecs:ap-southeast-2:005213230316:cluster/vtha-ECSCluster-1A5ZYNUN7X46N",
+                    security_group: "sg-abcdef",
+                    vpcId: "vpc-1",
+                    subnets: ["subnet-12359e64", "subnet-b442c0d0", "subnet-a2b967fb"]
                 },
                 applications: {
-                    'app-1': {
-                        url: '/',
+                    "app-1": {
+                        url: "/",
                         port: 1111
                     }
                 }
@@ -43,19 +39,19 @@ describe('', function () {
         };
         FactoryTest.prototype.has_service = function () {
             var service = this.resources[0];
-            chai_1.expect(service).to.have.property('name');
-            chai_1.expect(service).to.have.property('port');
-            chai_1.expect(service).to.have.property('url');
+            chai_1.expect(service).to.have.property("name");
+            chai_1.expect(service).to.have.property("port");
+            chai_1.expect(service).to.have.property("url");
         };
         FactoryTest.prototype.service_name = function () {
             var service = this.resources[0];
-            chai_1.expect(service.name).to.eq('BlahVthaDevApp1');
+            chai_1.expect(service.name).to.eq("BlahVthaDevApp1");
         };
         FactoryTest.prototype.has_cluster = function () {
             var cluster = this.resources[1];
-            chai_1.expect(cluster).to.have.property('id');
-            chai_1.expect(cluster).to.have.property('vpcId');
-            chai_1.expect(cluster).to.have.property('subnets');
+            chai_1.expect(cluster).to.have.property("id");
+            chai_1.expect(cluster).to.have.property("vpcId");
+            chai_1.expect(cluster).to.have.property("subnets");
         };
         return FactoryTest;
     }());

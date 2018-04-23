@@ -10,7 +10,7 @@ var Listener = (function () {
         this.priority = this.calculatePriority();
     }
     Listener.prototype.calculatePriority = function () {
-        return priority = priority + 1;
+        return (priority = priority + 1);
     };
     Object.defineProperty(Listener.prototype, "name", {
         get: function () {
@@ -34,7 +34,7 @@ var Listener = (function () {
         configurable: true
     });
     Listener.prototype.required = function () {
-        return (this.service.url && this.service.port);
+        return this.service.url && this.service.port;
     };
     Listener.prototype.generate = function () {
         var _this = this;
@@ -42,18 +42,18 @@ var Listener = (function () {
             return [];
         var definition = (_a = {},
             _a[this.targetGroupName] = {
-                'Type': 'AWS::ElasticLoadBalancingV2::TargetGroup',
-                'Properties': {
-                    'Name': this.targetGroupName,
-                    'HealthCheckIntervalSeconds': 10,
-                    'HealthCheckPath': this.healthcheckPath,
-                    'HealthCheckProtocol': 'HTTP',
-                    'HealthCheckTimeoutSeconds': 5,
-                    'HealthyThresholdCount': 2,
-                    'Port': 80,
-                    'Protocol': 'HTTP',
-                    'UnhealthyThresholdCount': 2,
-                    'VpcId': this.cluster.vpcId
+                Type: "AWS::ElasticLoadBalancingV2::TargetGroup",
+                Properties: {
+                    Name: this.targetGroupName,
+                    HealthCheckIntervalSeconds: 10,
+                    HealthCheckPath: this.healthcheckPath,
+                    HealthCheckProtocol: "HTTP",
+                    HealthCheckTimeoutSeconds: 5,
+                    HealthyThresholdCount: 2,
+                    Port: 80,
+                    Protocol: "HTTP",
+                    UnhealthyThresholdCount: 2,
+                    VpcId: this.cluster.vpcId
                 }
             },
             _a);
@@ -65,23 +65,27 @@ var Listener = (function () {
     };
     Listener.prototype.generateForProtocol = function (protocol) {
         return {
-            'Type': 'AWS::ElasticLoadBalancingV2::ListenerRule',
-            "DependsOn": ["Cls" + protocol + "Listener", "Cls" + protocol + "TargetGroup", this.targetGroupName],
-            'Properties': {
-                'Actions': [
+            Type: "AWS::ElasticLoadBalancingV2::ListenerRule",
+            DependsOn: [
+                "Cls" + protocol + "Listener",
+                "Cls" + protocol + "TargetGroup",
+                this.targetGroupName
+            ],
+            Properties: {
+                Actions: [
                     {
-                        'TargetGroupArn': { 'Ref': this.targetGroupName },
-                        'Type': 'forward'
+                        TargetGroupArn: { Ref: this.targetGroupName },
+                        Type: "forward"
                     }
                 ],
-                'Conditions': [
+                Conditions: [
                     {
-                        'Field': 'path-pattern',
-                        'Values': [this.service.url]
+                        Field: "path-pattern",
+                        Values: [this.service.url]
                     }
                 ],
-                'ListenerArn': { 'Ref': "Cls" + protocol + "Listener" },
-                'Priority': this.priority
+                ListenerArn: { Ref: "Cls" + protocol + "Listener" },
+                Priority: this.priority
             }
         };
     };
@@ -89,13 +93,15 @@ var Listener = (function () {
         get: function () {
             if (!this.required())
                 return [];
-            return [{
-                    'ContainerName': this.service.name,
-                    'ContainerPort': this.service.port,
-                    'TargetGroupArn': {
-                        'Ref': this.targetGroupName
+            return [
+                {
+                    ContainerName: this.service.name,
+                    ContainerPort: this.service.port,
+                    TargetGroupArn: {
+                        Ref: this.targetGroupName
                     }
-                }];
+                }
+            ];
         },
         enumerable: true,
         configurable: true

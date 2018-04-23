@@ -11,68 +11,62 @@ var chai_1 = require("chai");
 var cluster_1 = require("../cluster");
 var service_1 = require("../service");
 var _ = require("lodash");
-describe('with an existing cluster and a load balanced container', function () {
+describe("with an existing cluster and a load balanced container", function () {
     var ServiceTest = (function () {
         function ServiceTest() {
             this.cluster = {
-                id: 'arn:aws:ecs:ap-southeast-2:005213230316:cluster/vtha-ECSCluster-1A5ZYNUN7X46N',
-                security_group: 'sg-abcdef',
-                vpcId: 'vpc-1',
-                subnets: [
-                    'subnet-12359e64',
-                    'subnet-b442c0d0',
-                    'subnet-a2b967fb'
-                ]
+                id: "arn:aws:ecs:ap-southeast-2:005213230316:cluster/vtha-ECSCluster-1A5ZYNUN7X46N",
+                security_group: "sg-abcdef",
+                vpcId: "vpc-1",
+                subnets: ["subnet-12359e64", "subnet-b442c0d0", "subnet-a2b967fb"]
             };
             this.opts = {
-                service: 'blah-vtha-dev',
-                name: 'app-1',
-                repository: 'blah/vtha',
-                tag: 'tag-1',
-                url: '/',
+                service: "blah-vtha-dev",
+                name: "app-1",
+                repository: "blah/vtha",
+                tag: "tag-1",
+                url: "/",
                 port: 1111,
-                environment: [
-                    { blah: 'vtha' }
-                ]
+                environment: [{ blah: "vtha" }]
             };
         }
         ServiceTest.prototype.before = function () {
-            var cluster = new cluster_1.Cluster(this.cluster);
+            var cluster = new cluster_1.Cluster(this.cluster, "TestName");
             this.service = new service_1.Service(cluster, this.opts);
             this.resources = this.service.generate();
         };
         ServiceTest.prototype.service_name = function () {
-            chai_1.expect(this.service.name).to.eql('BlahVthaDevApp1');
+            chai_1.expect(this.service.name).to.eql("BlahVthaDevApp1");
         };
         ServiceTest.prototype.service_healthcheckPath = function () {
-            chai_1.expect(this.service.healthcheckPath).to.eql('/');
+            chai_1.expect(this.service.healthcheckPath).to.eql("/");
         };
         ServiceTest.prototype.service_resource = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1.Type');
-            chai_1.expect(result).to.eql('AWS::ECS::Service');
+            var result = _.get(this.resources, "BlahVthaDevApp1.Type");
+            chai_1.expect(result).to.eql("AWS::ECS::Service");
         };
         ServiceTest.prototype.task_definition_resource_type = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1TaskDefinition.Type');
-            chai_1.expect(result).to.eql('AWS::ECS::TaskDefinition');
+            var result = _.get(this.resources, "BlahVthaDevApp1TaskDefinition.Type");
+            chai_1.expect(result).to.eql("AWS::ECS::TaskDefinition");
         };
         ServiceTest.prototype.task_definition_resource = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Name');
-            chai_1.expect(result).to.eql('BlahVthaDevApp1');
+            var result = _.get(this.resources, "BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Name");
+            chai_1.expect(result).to.eql("BlahVthaDevApp1");
         };
         ServiceTest.prototype.environment_variables = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Environment');
-            chai_1.expect(result).to.eql([{ Name: 'blah', Value: 'vtha' }]);
+            var result = _.get(this.resources, "BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Environment");
+            chai_1.expect(result).to.eql([{ Name: "blah", Value: "vtha" }]);
         };
         ServiceTest.prototype.port_mappings = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].PortMappings');
-            chai_1.expect(result).to.eql([{ 'ContainerPort': 1111 }]);
+            var result = _.get(this.resources, "BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].PortMappings");
+            chai_1.expect(result).to.eql([{ ContainerPort: 1111 }]);
         };
         ServiceTest.prototype.service_role = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1.Properties.Role.Ref');
-            chai_1.expect(result).to.eql('ClsELBRole');
+            var result = _.get(this.resources, "BlahVthaDevApp1.Properties.Role.Ref");
+            chai_1.expect(result).to.eql("ClsELBRole");
         };
         ServiceTest.prototype.service_load_balancers = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1.Properties.LoadBalancers');
+            var result = _.get(this.resources, "BlahVthaDevApp1.Properties.LoadBalancers");
             chai_1.expect(result).to.not.be.empty;
         };
         return ServiceTest;
@@ -108,43 +102,39 @@ describe('with an existing cluster and a load balanced container', function () {
         mocha_typescript_1.suite
     ], ServiceTest);
 });
-describe('new cluster and container without load balancer', function () {
+describe("new cluster and container without load balancer", function () {
     var ServiceTest = (function () {
         function ServiceTest() {
             this.cluster = {
-                vpcId: 'vpc-1',
-                subnets: [
-                    'subnet-12359e64',
-                    'subnet-b442c0d0',
-                    'subnet-a2b967fb'
-                ]
+                vpcId: "vpc-1",
+                subnets: ["subnet-12359e64", "subnet-b442c0d0", "subnet-a2b967fb"]
             };
             this.opts = {
-                service: 'blah-vtha-dev',
-                name: 'app-1',
-                repository: 'blah/vtha',
-                stage: 'production',
-                tag: 'tag-1',
+                service: "blah-vtha-dev",
+                name: "app-1",
+                repository: "blah/vtha",
+                stage: "production",
+                tag: "tag-1"
             };
         }
         ServiceTest.prototype.before = function () {
-            var cluster = new cluster_1.Cluster(this.cluster);
+            var cluster = new cluster_1.Cluster(this.cluster, "TestName");
             this.service = new service_1.Service(cluster, this.opts);
             this.resources = this.service.generate();
         };
         ServiceTest.prototype.service_name_with_stage = function () {
-            chai_1.expect(this.service.name).to.eql('BlahVthaDevProductionApp1');
+            chai_1.expect(this.service.name).to.eql("BlahVthaDevProductionApp1");
         };
         ServiceTest.prototype.service_load_balancers = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1.Properties.LoadBalancers');
+            var result = _.get(this.resources, "BlahVthaDevApp1.Properties.LoadBalancers");
             chai_1.expect(result).to.be.empty;
         };
         ServiceTest.prototype.service_role_undefined = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1.Properties.Role');
+            var result = _.get(this.resources, "BlahVthaDevApp1.Properties.Role");
             chai_1.expect(result).to.be.undefined;
         };
         ServiceTest.prototype.environment_variables = function () {
-            var result = _.get(this.resources, 'BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Environment');
+            var result = _.get(this.resources, "BlahVthaDevApp1TaskDefinition.Properties.ContainerDefinitions[0].Environment");
             chai_1.expect(result).to.be.empty;
         };
         return ServiceTest;

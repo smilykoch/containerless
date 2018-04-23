@@ -1,21 +1,23 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-      "target": "ES5",
-      "module": "commonjs",
-      "noImplicitAny": true,
-      "noEmitOnError": false,
-      "removeComments": false,
-      "preserveConstEnums": true,
-      "strictNullChecks": true,
-      "sourceMap": false,
-      "experimentalDecorators": true,
-      "declaration": true
-    },
-    "exclude": [
-      "node_modules",
-      "node_modules/**",
-      "node_modules/typescript",
-      "node_modules/@types"
-    ]
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": ".dist",
+    "target": "ES5",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noEmitOnError": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": false,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "lib": ["es5", "es6", "dom", "es2015", "es2016", "esnext.asynciterable"]
+  },
+  "exclude": [
+    "node_modules",
+    "node_modules/**",
+    "node_modules/typescript",
+    "node_modules/@types"
+  ]
 }

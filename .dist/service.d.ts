@@ -1,0 +1,36 @@
+import { Cluster } from "./cluster";
+import { Resource } from "./resource";
+export declare class Service implements Resource {
+    private DEFAULT_HEALTHCHECK_PATH;
+    port: number;
+    url: string;
+    healthcheckPath: string;
+    private _name;
+    private _service;
+    private _stage;
+    private cluster;
+    private count;
+    private environment;
+    private listener;
+    private logGroupRetention;
+    private max_size;
+    private memory;
+    private min_size;
+    private repository;
+    private tag;
+    private threshold;
+    constructor(cluster: Cluster, opts: any);
+    requirePort(): void;
+    requireRepository(): void;
+    requireTag(): void;
+    requireURL(): void;
+    readonly image: string;
+    readonly taskDefinitionName: string;
+    readonly logGroupName: string;
+    readonly scalingTargetName: string;
+    readonly scalingPolicyName: string;
+    readonly scalingAlarmName: string;
+    readonly name: string;
+    generate(): any;
+    definition: () => any[];
+}

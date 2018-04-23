@@ -10,23 +10,23 @@ var mocha_typescript_1 = require("mocha-typescript");
 var ServerlecsPlugin = require("../index");
 var _ = require("lodash");
 var app = {
-    name: 'Container',
+    name: "Container",
     load_balancer: {
-        subnets: 'blah-vtha'
+        subnets: "blah-vtha"
     }
 };
 var otherApp = {
-    name: 'Container',
+    name: "Container",
     load_balancer: {
-        subnets: 'blah-vtha'
+        subnets: "blah-vtha"
     }
 };
 var containerless = {
-    name: 'Blah',
-    repository: 'blah/vtha',
-    clusterId: 'arn:blah:vtha',
+    name: "Blah",
+    repository: "blah/vtha",
+    clusterId: "arn:blah:vtha",
     load_balancer: {
-        vpcId: 'vpc-123456'
+        vpcId: "vpc-123456"
     },
     applications: [app, otherApp]
 };
@@ -35,10 +35,10 @@ var ServerlecsPluginTest = (function () {
     }
     ServerlecsPluginTest.prototype.before = function () {
         var serverless = {};
-        _.set(serverless, 'service.custom.containerless', containerless);
-        _.set(serverless, 'processedInput.options.tag', 'tag');
-        _.set(serverless, 'config.servicePath', '/blah/vtha');
-        _.set(serverless, 'cli.log', function () { });
+        _.set(serverless, "service.custom.containerless", containerless);
+        _.set(serverless, "processedInput.options.tag", "tag");
+        _.set(serverless, "config.servicePath", "/blah/vtha");
+        _.set(serverless, "cli.log", function () { });
         this.plugin = new ServerlecsPlugin(serverless, {});
     };
     return ServerlecsPluginTest;
