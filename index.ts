@@ -22,6 +22,9 @@ class ServerlessPlugin {
     this.serverless = serverless;
     this.provider = "aws";
 
+    this.serverless.cli.log(
+      JSON.stringify(this.serverless.service.custom.containerless)
+    );
     this.tag = this.getTag();
     this.opts = this.getOptions();
 
@@ -42,8 +45,6 @@ class ServerlessPlugin {
   public compile = () => {
     const Resources = this.serverless.service.provider
       .compiledCloudFormationTemplate.Resources;
-
-    this.serverless.cli.log(JSON.stringify(this.opts));
 
     const resources = prepare(this.tag, this.opts);
     _.each(resources, resource => {
