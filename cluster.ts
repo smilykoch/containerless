@@ -405,7 +405,7 @@ export class Cluster implements Resource {
       }
     };
     if (this.key_name) {
-      conf.ClsLaunchConfiguration["KeyName"] = this.key_name;
+      conf.ClsLaunchConfiguration.Properties["KeyName"] = this.key_name;
     }
     return conf;
   }

@@ -77,11 +77,13 @@ class ServerlessPlugin {
 
     this.serverless.cli.log(`Pushing image ${tag}`);
 
+    let stdio = null;
     if (process.env.SLS_DEBUG) {
       this.serverless.cli.log(command);
+      stdio = [0, 1, 2];
     }
 
-    const result = execSync(command);
+    const result = execSync(command, { stdio });
     this.serverless.cli.log(result);
   }
 
@@ -90,10 +92,12 @@ class ServerlessPlugin {
 
     this.serverless.cli.log(`Building image ${tag} at ${path}`);
 
+    let stdio = null;
     if (process.env.SLS_DEBUG) {
       this.serverless.cli.log(command);
+      stdio = [0, 1, 2];
     }
-    const result = execSync(command);
+    const result = execSync(command, { stdio });
     this.serverless.cli.log(result);
   }
 
