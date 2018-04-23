@@ -34,6 +34,7 @@ class ServerlessPlugin {
 
     this.hooks = {
       "package:compileFunctions": this.compile,
+      "package:createDeploymentArtifacts": this.build,
       "cls-build:run": this.build
     };
   }
