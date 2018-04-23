@@ -22,9 +22,6 @@ class ServerlessPlugin {
     this.serverless = serverless;
     this.provider = "aws";
 
-    this.serverless.cli.log(
-      JSON.stringify(this.serverless.service.custom.containerless)
-    );
     this.tag = this.getTag();
     this.opts = this.getOptions();
 
@@ -36,9 +33,13 @@ class ServerlessPlugin {
     };
 
     this.hooks = {
-      "package:compileFunctions": this.compile,
-      "package:createDeploymentArtifacts": this.build,
-      "cls-build:run": this.build
+      "package:compileFunctions": Promise.resolve().then(
+        this.compile.bind(this)
+      ),
+      "package:createDeploymentArtifacts": Promise.resolve().then(
+        this.build.bind(this)
+      ),
+      "cls-build:run": Promise.resolve().then(this.build.bind(this))
     };
   }
 
