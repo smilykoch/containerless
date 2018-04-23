@@ -19,7 +19,7 @@
     "typescript": "^2.3.2"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha .dist/test",
     "install": "tsc",
     "watch": "mocha-typescript-watch",
     "dev-test-watch": "mocha-typescript-watch"

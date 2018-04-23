@@ -20,7 +20,7 @@ class ServerlessPlugin {
 
   constructor(serverless: any, options: any) {
     this.serverless = serverless;
-    this.provider = "aws";
+    this.provider = this.serverless.getProvider("aws");
 
     this.tag = this.getTag();
     this.opts = this.getOptions();
@@ -35,9 +35,6 @@ class ServerlessPlugin {
     this.hooks = {
       "package:compileFunctions": Promise.resolve().then(
         this.compile.bind(this)
-      ),
-      "package:createDeploymentArtifacts": Promise.resolve().then(
-        this.build.bind(this)
       ),
       "cls-build:run": Promise.resolve().then(this.build.bind(this))
     };

@@ -21,6 +21,7 @@ export interface Serverless {
   config: Config;
   service: Service;
   processedInput: Input;
+  getProvider: any;
 }
 
 export interface Command {

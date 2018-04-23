@@ -8,7 +8,6 @@ var ServerlessPlugin = (function () {
         this.compile = function () {
             var Resources = _this.serverless.service.provider
                 .compiledCloudFormationTemplate.Resources;
-            console.log(_this.opts);
             var resources = factory_1.prepare(_this.tag, _this.opts);
             _.each(resources, function (resource) {
                 _this.serverless.cli.log("Building resources for " + resource.name);
@@ -40,9 +39,9 @@ var ServerlessPlugin = (function () {
             }
         };
         this.hooks = {
-            "package:compileFunctions": this.compile,
-            "package:createDeploymentArtifacts": this.build,
-            "cls-build:run": this.build
+            "package:compileFunctions": Promise.resolve().then(this.compile.bind(this)),
+            "package:createDeploymentArtifacts": Promise.resolve().then(this.build.bind(this)),
+            "cls-build:run": Promise.resolve().then(this.build.bind(this))
         };
     }
     ServerlessPlugin.prototype.dockerBuildAndPush = function (app) {
