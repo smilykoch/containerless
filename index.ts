@@ -70,7 +70,7 @@ class ServerlessPlugin {
 
   public dockerBuildAndPush(app: { image: string; path: string }) {
     this.dockerBuild(app.path, app.image);
-    this.dockerLogin(this.serverless.service.provider.profile);
+    this.dockerLogin(this.serverless.service.provider.profile || "default");
     this.dockerPush(app.image);
     this.serverless.cli.log(`Built with tag: ${this.tag}`);
   }
