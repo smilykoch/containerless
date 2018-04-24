@@ -70,8 +70,24 @@ class ServerlessPlugin {
 
   public dockerBuildAndPush(app: { image: string; path: string }) {
     this.dockerBuild(app.path, app.image);
+    this.dockerLogin(this.serverless.service.provider.profile);
     this.dockerPush(app.image);
     this.serverless.cli.log(`Built with tag: ${this.tag}`);
+  }
+
+  public dockerLogin(profile: string) {
+    const command = `eval $(aws ecr get-login --no-include-email --profile ${profile})`;
+
+    this.serverless.cli.log(`Signing in to ECR with AWS profile [${profile}]`);
+
+    let stdio = null;
+    if (process.env.SLS_DEBUG) {
+      this.serverless.cli.log(command);
+      stdio = [0, 1, 2];
+    }
+
+    const result = execSync(command, { stdio });
+    // this.serverless.cli.log(result);
   }
 
   public dockerPush(tag: string) {
@@ -86,7 +102,7 @@ class ServerlessPlugin {
     }
 
     const result = execSync(command, { stdio });
-    this.serverless.cli.log(result);
+    // this.serverless.cli.log(result);
   }
 
   public dockerBuild(path: string, tag: string) {
@@ -100,7 +116,7 @@ class ServerlessPlugin {
       stdio = [0, 1, 2];
     }
     const result = execSync(command, { stdio });
-    this.serverless.cli.log(result);
+    // this.serverless.cli.log(result);
   }
 
   public getTag() {
