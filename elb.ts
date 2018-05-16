@@ -46,9 +46,18 @@ export class ELB implements Resource {
 
   generateListener(protocol: string) {
     let definition: any = {
+      [`Cls${protocol}TargetGroup`]: {
+        Type: "AWS::ElasticLoadBalancingV2::TargetGroup",
+        DependsOn: "ClsELB",
+        Properties: {
+          Port: this.PORTS[protocol],
+          Protocol: protocol,
+          VpcId: this.cluster.vpcId
+        }
+      },
       [`Cls${protocol}Listener`]: {
         Type: "AWS::ElasticLoadBalancingV2::Listener",
-        DependsOn: "ClsELB",
+        DependsOn: ["ClsELB", `Cls${protocol}TargetGroup`],
         Properties: {
           Certificates: [],
           DefaultActions: [
@@ -64,15 +73,6 @@ export class ELB implements Resource {
           },
           Port: this.PORTS[protocol],
           Protocol: protocol
-        }
-      },
-      [`Cls${protocol}TargetGroup`]: {
-        Type: "AWS::ElasticLoadBalancingV2::TargetGroup",
-        DependsOn: "ClsELB",
-        Properties: {
-          Port: this.PORTS[protocol],
-          Protocol: protocol,
-          VpcId: this.cluster.vpcId
         }
       }
     };
